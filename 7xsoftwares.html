@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7xSoftwares — Tecnologia que transforma</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & ROOT
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:       #e6f1f8;
+  --surface:  #ffffff;
+  --primary:  #1565c0;
+  --primary-d:#0d47a1;
+  --tonal:    #ddeaf9;
+  --tonal2:   #b8d2f4;
+  --ink:      #0a1929;
+  --ink2:     #1e3a5f;
+  --muted:    #5a7a9e;
+  --border:   rgba(21,101,192,0.13);
+  --r:        16px;
+  --nav-h:    56px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════
+   NAV — GLOBAL
+═══════════════════════════════════════════ */
+nav {
+  position: sticky; top: 0; z-index: 200;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+  background: rgba(230,241,248,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.brand {
+  font-size: 17px; font-weight: 900; color: var(--primary);
+  text-decoration: none; letter-spacing: -.3px; white-space: nowrap;
+  flex-shrink: 0;
+}
+.brand span { color: var(--ink2); font-weight: 600; }
+
+/* hamburger */
+.ham { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+.ham span { display: block; width: 22px; height: 2px; background: var(--ink2); border-radius: 2px; transition: all .25s; }
+.ham.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.ham.open span:nth-child(2) { opacity: 0; }
+.ham.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* nav dropdown */
+.nav-menu {
+  position: absolute; top: var(--nav-h); left: 0; right: 0;
+  background: rgba(230,241,248,0.98); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: none; flex-direction: column; padding: 8px 0 12px;
+  box-shadow: 0 8px 24px rgba(10,25,41,0.1);
+}
+.nav-menu.open { display: flex; }
+.nav-item {
+  padding: 12px 24px; font-size: 14px; font-weight: 700;
+  color: var(--ink2); cursor: pointer; display: flex; align-items: center; gap: 10px;
+  transition: background .15s, color .15s;
+  border: none; background: none; text-align: left; width: 100%;
+  font-family: 'Nunito', sans-serif;
+}
+.nav-item:hover { background: var(--tonal); color: var(--primary); }
+.nav-item.active { color: var(--primary); background: var(--tonal); }
+.nav-item .ni-icon { font-size: 16px; width: 20px; text-align: center; }
+.nav-item .ni-badge {
+  font-size: 9px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase;
+  background: var(--primary); color: white; border-radius: 4px; padding: 2px 6px; margin-left: auto;
+}
+
+/* desktop nav */
+@media (min-width: 768px) {
+  nav { padding: 0 40px; }
+  .ham { display: none; }
+  .nav-menu {
+    position: static; display: flex; flex-direction: row;
+    background: none; border: none; padding: 0; box-shadow: none;
+    backdrop-filter: none; gap: 2px; align-items: center;
+  }
+  .nav-item { padding: 8px 14px; border-radius: 8px; font-size: 13px; }
+  .nav-item .ni-icon { display: none; }
+  .nav-item .ni-badge { margin-left: 6px; }
+  .nav-cta-wrap { display: flex; align-items: center; gap: 8px; }
+}
+.nav-cta {
+  background: var(--primary); color: #fff; border: none; border-radius: 99px;
+  padding: 8px 18px; font-size: 13px; font-weight: 800;
+  font-family: 'Nunito', sans-serif; cursor: pointer; text-decoration: none;
+  display: inline-block; transition: background .2s; white-space: nowrap; flex-shrink: 0;
+}
+.nav-cta:hover { background: var(--primary-d); }
+
+/* ═══════════════════════════════════════════
+   PAGE SYSTEM
+═══════════════════════════════════════════ */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ═══════════════════════════════════════════
+   SHARED COMPONENTS
+═══════════════════════════════════════════ */
+.sec { padding: 36px 20px; }
+.sec-label { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary); margin-bottom: 6px; }
+.sec-title { font-size: clamp(19px, 4vw, 28px); font-weight: 900; color: var(--ink); line-height: 1.2; letter-spacing: -.4px; margin-bottom: 8px; }
+.sec-sub { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 24px; font-weight: 500; }
+
+.hero { padding: 44px 20px 16px; text-align: center; position: relative; overflow: hidden; }
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 75% 55% at 50% 0%, rgba(21,101,192,0.16) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--tonal); color: var(--primary); border-radius: 99px; padding: 5px 14px; font-size: 12px; font-weight: 700; margin-bottom: 18px; }
+.chip-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; animation: blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+.hero h1 { font-size: clamp(22px, 5vw, 38px); font-weight: 900; color: var(--ink); line-height: 1.2; letter-spacing: -.5px; margin-bottom: 12px; }
+.hero h1 strong { color: var(--primary); }
+.hero-sub { font-size: 15px; color: var(--ink2); line-height: 1.65; max-width: 380px; margin: 0 auto; font-weight: 500; }
+
+.stats-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 22px 20px 0; }
+.stat-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 99px; padding: 7px 16px; font-size: 13px; color: var(--ink2); display: flex; align-items: center; gap: 5px; font-weight: 600; }
+.stat-pill b { color: var(--primary); font-weight: 800; font-size: 14px; }
+
+.feature-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 22px 20px 0; }
+.fp { display: inline-flex; align-items: center; gap: 7px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 99px; padding: 7px 14px; font-size: 12.5px; font-weight: 700; color: var(--ink2); transition: border-color .2s, background .2s, color .2s; cursor: default; }
+.fp:hover { border-color: var(--primary); background: var(--tonal); color: var(--primary); }
+
+.divider { height: 1px; background: var(--border); margin: 28px 20px 0; }
+
+/* MODULE CARDS */
+.modules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mod-card { background: var(--surface); border-radius: var(--r); padding: 20px 16px 16px; border: 1px solid var(--border); position: relative; overflow: hidden; transition: transform .18s, box-shadow .18s; }
+.mod-card:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(21,101,192,0.13); }
+.mod-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+.mod-card::after { content: ''; position: absolute; top: -30px; left: -20px; width: 110px; height: 110px; border-radius: 50%; opacity: .07; filter: blur(28px); pointer-events: none; }
+.mc1::before{background:linear-gradient(90deg,#1565c0,#42a5f5);} .mc1::after{background:#1565c0;}
+.mc2::before{background:linear-gradient(90deg,#4f46e5,#818cf8);} .mc2::after{background:#4f46e5;}
+.mc3::before{background:linear-gradient(90deg,#b45309,#fbbf24);} .mc3::after{background:#b45309;}
+.mc4::before{background:linear-gradient(90deg,#be185d,#f472b6);} .mc4::after{background:#be185d;}
+.mc5::before{background:linear-gradient(90deg,#0369a1,#38bdf8);} .mc5::after{background:#0369a1;}
+.mc6::before{background:linear-gradient(90deg,#0f766e,#2dd4bf);} .mc6::after{background:#0f766e;}
+.mc7::before{background:linear-gradient(90deg,#15803d,#4ade80);} .mc7::after{background:#15803d;}
+.mc8::before{background:linear-gradient(90deg,#7c3aed,#c4b5fd);} .mc8::after{background:#7c3aed;}
+.mc9::before{background:linear-gradient(90deg,#c2410c,#fb923c);} .mc9::after{background:#c2410c;}
+.mc10::before{background:linear-gradient(90deg,#0e7490,#67e8f9);} .mc10::after{background:#0e7490;}
+
+.mod-icon { font-size: 22px; margin-bottom: 12px; display: block; position: relative; z-index: 1; }
+.mod-title { font-size: 13px; font-weight: 800; color: var(--ink); margin-bottom: 6px; line-height: 1.25; position: relative; z-index: 1; }
+.mod-desc { font-size: 11.5px; color: var(--muted); line-height: 1.6; font-weight: 500; position: relative; z-index: 1; }
+.mod-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 11px; position: relative; z-index: 1; }
+.mod-tag { font-size: 10px; font-weight: 700; color: var(--primary); background: var(--tonal); border-radius: 6px; padding: 2px 8px; }
+
+/* HIGHLIGHT DARK BLOCK */
+.highlight { background: var(--ink); border-radius: 20px; margin: 0 20px; padding: 28px 22px; }
+.highlight .sec-label { color: #93c5fd; }
+.highlight .sec-title { color: #fff; margin-bottom: 10px; }
+.highlight .sec-sub { color: rgba(255,255,255,.58); margin-bottom: 20px; }
+.hl-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.hl-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: rgba(255,255,255,.82); line-height: 1.5; font-weight: 500; }
+.hl-ic { background: rgba(255,255,255,.1); border-radius: 8px; padding: 4px 7px; font-size: 13px; flex-shrink: 0; }
+.hl-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 22px; }
+.hl-m { background: rgba(255,255,255,.07); border-radius: 12px; padding: 16px 14px; }
+.hl-m-num { font-size: 24px; font-weight: 800; color: #fff; line-height: 1; }
+.hl-m-num em { font-style: normal; color: #93c5fd; font-size: 14px; }
+.hl-m-label { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 4px; font-weight: 600; }
+
+/* FEAT LIST */
+.feat-list { display: flex; flex-direction: column; gap: 8px; }
+.feat-card { background: var(--surface); border-radius: var(--r); padding: 18px 16px; border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 14px; }
+.feat-num { font-size: 11px; font-weight: 800; color: var(--primary); background: var(--tonal); border-radius: 8px; min-width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.feat-title { font-size: 14px; font-weight: 800; color: var(--ink); margin-bottom: 3px; }
+.feat-desc { font-size: 13px; color: var(--muted); line-height: 1.6; font-weight: 500; }
+
+/* CONTACT BLOCK */
+.contact-block { background: var(--surface); border-radius: 20px; margin: 0 20px; padding: 28px 22px; border: 1px solid var(--border); }
+.contact-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.contact-row:last-child { border-bottom: none; }
+.contact-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--tonal); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.contact-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; }
+.contact-val { font-size: 15px; font-weight: 700; color: var(--ink); }
+.contact-val a { color: var(--primary); text-decoration: none; }
+.contact-val a:hover { text-decoration: underline; }
+
+/* FOOTER */
+footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 28px 20px; margin-top: 36px; border-radius: 20px 20px 0 0; }
+.footer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+.footer-logo { font-size: 17px; font-weight: 900; color: #fff; }
+.footer-logo span { opacity: .5; font-weight: 600; }
+.footer-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.footer-link { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.5); background: rgba(255,255,255,.07); border-radius: 8px; padding: 5px 10px; cursor: pointer; transition: background .2s; border: none; font-family: 'Nunito', sans-serif; }
+.footer-link:hover { background: rgba(255,255,255,.15); color: #fff; }
+.footer-bottom { font-size: 12px; border-top: 1px solid rgba(255,255,255,.1); padding-top: 16px; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ═══════════════════════════════════════════
+   HOME PAGE
+═══════════════════════════════════════════ */
+.home-products { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.prod-card {
+  background: var(--surface); border-radius: var(--r);
+  padding: 22px 18px; border: 1px solid var(--border);
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: transform .18s, box-shadow .18s;
+}
+.prod-card:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(21,101,192,0.14); }
+.prod-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.prod-card::after { content: ''; position: absolute; top: -25px; right: -25px; width: 80px; height: 80px; border-radius: 50%; opacity: .06; filter: blur(20px); }
+.pc-blue::before { background: linear-gradient(90deg,#1565c0,#42a5f5); } .pc-blue::after { background: #1565c0; }
+.pc-indigo::before { background: linear-gradient(90deg,#4338ca,#818cf8); } .pc-indigo::after { background: #4338ca; }
+.pc-rose::before { background: linear-gradient(90deg,#be185d,#fb7185); } .pc-rose::after { background: #be185d; }
+.pc-amber::before { background: linear-gradient(90deg,#b45309,#fbbf24); } .pc-amber::after { background: #b45309; }
+.pc-teal::before { background: linear-gradient(90deg,#0f766e,#2dd4bf); } .pc-teal::after { background: #0f766e; }
+.prod-icon { font-size: 26px; margin-bottom: 12px; display: block; position: relative; z-index: 1; }
+.prod-name { font-size: 16px; font-weight: 900; color: var(--ink); margin-bottom: 6px; position: relative; z-index: 1; }
+.prod-tagline { font-size: 12px; color: var(--muted); line-height: 1.55; font-weight: 500; position: relative; z-index: 1; }
+.prod-badge { display: inline-flex; align-items: center; gap: 4px; margin-top: 12px; background: var(--tonal); color: var(--primary); border-radius: 6px; padding: 3px 9px; font-size: 10px; font-weight: 800; position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════════
+   KANRISHA — JAPANESE THEME OVERRIDES
+═══════════════════════════════════════════ */
+#page-kanrisha {
+  --bg:       #f0ede8;
+  --surface:  #faf8f5;
+  --primary:  #8b1a1a;
+  --primary-d:#6b1313;
+  --tonal:    #f5e8e8;
+  --tonal2:   #e8d0d0;
+  --ink:      #1a0f0f;
+  --ink2:     #4a2020;
+  --muted:    #8a6060;
+  --border:   rgba(139,26,26,0.13);
+  background: var(--bg);
+  font-family: 'Noto Sans JP', 'Nunito', sans-serif;
+}
+#page-kanrisha nav,
+#page-kanrisha .nav-menu { background: rgba(240,237,232,0.95); }
+#page-kanrisha .brand { color: var(--primary); }
+#page-kanrisha .hero::before { background: radial-gradient(ellipse 75% 55% at 50% 0%, rgba(139,26,26,0.14) 0%, transparent 70%); }
+#page-kanrisha .hero-chip { background: var(--tonal); color: var(--primary); }
+#page-kanrisha .stat-pill { background: var(--surface); border-color: var(--border); color: var(--ink2); }
+#page-kanrisha .stat-pill b { color: var(--primary); }
+#page-kanrisha .fp { background: var(--surface); border-color: var(--border); color: var(--ink2); }
+#page-kanrisha .fp:hover { border-color: var(--primary); background: var(--tonal); color: var(--primary); }
+#page-kanrisha .sec-label { color: var(--primary); }
+#page-kanrisha .nav-cta { background: var(--primary); }
+#page-kanrisha .nav-cta:hover { background: var(--primary-d); }
+#page-kanrisha .nav-item:hover, #page-kanrisha .nav-item.active { background: var(--tonal); color: var(--primary); }
+#page-kanrisha .mod-tag { background: var(--tonal); color: var(--primary); }
+#page-kanrisha .feat-num { background: var(--tonal); color: var(--primary); }
+#page-kanrisha .highlight { background: #1a0f0f; }
+#page-kanrisha .highlight .sec-label { color: #fca5a5; }
+#page-kanrisha .highlight .hl-m-num em { color: #fca5a5; }
+#page-kanrisha footer { background: #1a0f0f; }
+#page-kanrisha .contact-icon { background: var(--tonal); }
+
+/* Kanrisha decorative */
+.kamon { font-size: 48px; display: block; margin: 0 auto 16px; opacity: .15; position: absolute; top: 20px; right: 20px; pointer-events: none; }
+
+/* ═══════════════════════════════════════════
+   EXPERT — DARK INVESTIGATIVE THEME
+═══════════════════════════════════════════ */
+#page-expert {
+  --bg:       #0f1117;
+  --surface:  #1a1d27;
+  --primary:  #c9a227;
+  --primary-d:#a8841c;
+  --tonal:    #2a2614;
+  --tonal2:   #3a3420;
+  --ink:      #f0ede8;
+  --ink2:     #c8c4b8;
+  --muted:    #8a8678;
+  --border:   rgba(201,162,39,0.18);
+  background: var(--bg);
+}
+#page-expert nav { background: rgba(15,17,23,0.97); border-bottom-color: var(--border); }
+#page-expert .nav-menu { background: rgba(15,17,23,0.98); border-bottom-color: var(--border); }
+#page-expert .brand { color: var(--primary); }
+#page-expert .hero::before { background: radial-gradient(ellipse 75% 55% at 50% 0%, rgba(201,162,39,0.12) 0%, transparent 70%); }
+#page-expert .hero-chip { background: var(--tonal); color: var(--primary); }
+#page-expert .hero h1 { color: var(--ink); }
+#page-expert .hero-sub { color: var(--ink2); }
+#page-expert .stat-pill { background: var(--surface); border-color: var(--border); color: var(--ink2); }
+#page-expert .stat-pill b { color: var(--primary); }
+#page-expert .fp { background: var(--surface); border-color: var(--border); color: var(--ink2); }
+#page-expert .fp:hover { border-color: var(--primary); background: var(--tonal); color: var(--primary); }
+#page-expert .sec-label { color: var(--primary); }
+#page-expert .sec-title { color: var(--ink); }
+#page-expert .sec-sub { color: var(--muted); }
+#page-expert .mod-card { background: var(--surface); border-color: var(--border); }
+#page-expert .mod-title { color: var(--ink); }
+#page-expert .mod-tag { background: var(--tonal); color: var(--primary); }
+#page-expert .feat-card { background: var(--surface); border-color: var(--border); }
+#page-expert .feat-title { color: var(--ink); }
+#page-expert .feat-num { background: var(--tonal); color: var(--primary); }
+#page-expert .nav-cta { background: var(--primary); color: #0f1117; }
+#page-expert .nav-cta:hover { background: var(--primary-d); }
+#page-expert .nav-item { color: var(--ink2); }
+#page-expert .nav-item:hover, #page-expert .nav-item.active { background: var(--tonal); color: var(--primary); }
+#page-expert .divider { background: var(--border); }
+#page-expert .contact-block { background: var(--surface); border-color: var(--border); }
+#page-expert .contact-label { color: var(--muted); }
+#page-expert .contact-val { color: var(--ink); }
+#page-expert .contact-val a { color: var(--primary); }
+#page-expert .contact-icon { background: var(--tonal); }
+#page-expert footer { background: #08090d; }
+#page-expert .footer-logo { color: var(--ink); }
+#page-expert .footer-link { color: rgba(240,237,232,.4); }
+#page-expert .footer-link:hover { color: var(--ink); }
+
+/* ═══════════════════════════════════════════
+   TERAPIA — SOFT WARM THEME
+═══════════════════════════════════════════ */
+#page-terapia {
+  --bg:       #f5f0fb;
+  --surface:  #ffffff;
+  --primary:  #6d28d9;
+  --primary-d:#5b21b6;
+  --tonal:    #ede9fc;
+  --tonal2:   #d8d0f8;
+  --ink:      #1e0a3c;
+  --ink2:     #3d2062;
+  --muted:    #7c6a9e;
+  --border:   rgba(109,40,217,0.12);
+  background: var(--bg);
+}
+#page-terapia nav { background: rgba(245,240,251,0.95); }
+#page-terapia .nav-menu { background: rgba(245,240,251,0.98); }
+#page-terapia .brand { color: var(--primary); }
+#page-terapia .hero::before { background: radial-gradient(ellipse 75% 55% at 50% 0%, rgba(109,40,217,0.14) 0%, transparent 70%); }
+#page-terapia .hero-chip { background: var(--tonal); color: var(--primary); }
+#page-terapia .stat-pill { background: var(--surface); border-color: var(--border); color: var(--ink2); }
+#page-terapia .stat-pill b { color: var(--primary); }
+#page-terapia .fp { background: var(--surface); border-color: var(--border); color: var(--ink2); }
+#page-terapia .fp:hover { border-color: var(--primary); background: var(--tonal); color: var(--primary); }
+#page-terapia .sec-label { color: var(--primary); }
+#page-terapia .mod-tag { background: var(--tonal); color: var(--primary); }
+#page-terapia .feat-num { background: var(--tonal); color: var(--primary); }
+#page-terapia .highlight { background: #1e0a3c; }
+#page-terapia .highlight .sec-label { color: #c4b5fd; }
+#page-terapia .highlight .hl-m-num em { color: #c4b5fd; }
+#page-terapia .nav-cta { background: var(--primary); }
+#page-terapia .nav-cta:hover { background: var(--primary-d); }
+#page-terapia .nav-item:hover, #page-terapia .nav-item.active { background: var(--tonal); color: var(--primary); }
+#page-terapia footer { background: #1e0a3c; }
+#page-terapia .contact-icon { background: var(--tonal); }
+
+/* ═══════════════════════════════════════════
+   IA — DARK TECH THEME
+═══════════════════════════════════════════ */
+#page-ia {
+  --bg:       #050b14;
+  --surface:  #0d1929;
+  --primary:  #00d4aa;
+  --primary-d:#00b894;
+  --tonal:    #071e2e;
+  --tonal2:   #0a2a3f;
+  --ink:      #e8f4f0;
+  --ink2:     #a0c4b8;
+  --muted:    #5a8a7e;
+  --border:   rgba(0,212,170,0.18);
+  background: var(--bg);
+}
+#page-ia nav { background: rgba(5,11,20,0.97); border-bottom-color: var(--border); }
+#page-ia .nav-menu { background: rgba(5,11,20,0.98); border-bottom-color: var(--border); }
+#page-ia .brand { color: var(--primary); }
+#page-ia .hero::before { background: radial-gradient(ellipse 75% 55% at 50% 0%, rgba(0,212,170,0.15) 0%, transparent 70%); }
+#page-ia .hero-chip { background: var(--tonal); color: var(--primary); }
+#page-ia .hero h1 { color: var(--ink); }
+#page-ia .hero-sub { color: var(--ink2); }
+#page-ia .stat-pill { background: var(--surface); border-color: var(--border); color: var(--ink2); }
+#page-ia .stat-pill b { color: var(--primary); }
+#page-ia .fp { background: var(--surface); border-color: var(--border); color: var(--ink2); }
+#page-ia .fp:hover { border-color: var(--primary); background: var(--tonal); color: var(--primary); }
+#page-ia .sec-label { color: var(--primary); }
+#page-ia .sec-title { color: var(--ink); }
+#page-ia .sec-sub { color: var(--muted); }
+#page-ia .mod-card { background: var(--surface); border-color: var(--border); }
+#page-ia .mod-title { color: var(--ink); }
+#page-ia .mod-desc { color: var(--muted); }
+#page-ia .mod-tag { background: var(--tonal); color: var(--primary); }
+#page-ia .feat-card { background: var(--surface); border-color: var(--border); }
+#page-ia .feat-title { color: var(--ink); }
+#page-ia .feat-desc { color: var(--muted); }
+#page-ia .feat-num { background: var(--tonal); color: var(--primary); }
+#page-ia .nav-cta { background: var(--primary); color: #050b14; }
+#page-ia .nav-cta:hover { background: var(--primary-d); }
+#page-ia .nav-item { color: var(--ink2); }
+#page-ia .nav-item:hover, #page-ia .nav-item.active { background: var(--tonal); color: var(--primary); }
+#page-ia .divider { background: var(--border); }
+#page-ia .highlight { background: #020810; }
+#page-ia .highlight .sec-label { color: #6ee7d4; }
+#page-ia .highlight .hl-m-num em { color: #6ee7d4; }
+#page-ia .contact-block { background: var(--surface); border-color: var(--border); }
+#page-ia .contact-label { color: var(--muted); }
+#page-ia .contact-val { color: var(--ink); }
+#page-ia .contact-val a { color: var(--primary); }
+#page-ia .contact-icon { background: var(--tonal); }
+#page-ia footer { background: #020508; }
+#page-ia .footer-logo { color: var(--ink); }
+
+/* IA grid glow effect */
+#page-ia .hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 80%);
+  opacity: 0.5; pointer-events: none;
+}
+
+/* RESPONSIVE */
+@media (min-width: 600px) {
+  .hero { padding: 60px 36px 20px; }
+  .sec { padding: 52px 36px; }
+  .modules-grid { grid-template-columns: repeat(3, 1fr); }
+  .feat-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .highlight, .divider, .contact-block { margin: 0 36px; }
+  .feature-pills { padding: 22px 36px 0; }
+  .home-products { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 960px) {
+  .hero { padding: 72px 60px 24px; }
+  .sec { padding: 64px 60px; }
+  .modules-grid { grid-template-columns: repeat(4, 1fr); }
+  .highlight, .divider, .contact-block { margin: 0 60px; }
+  .feature-pills { padding: 22px 60px 0; }
+  .home-products { grid-template-columns: repeat(4, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     GLOBAL NAV (rendered once, reused)
+════════════════════════════════════ -->
+<nav id="main-nav">
+  <a class="brand" href="#" onclick="showPage('home')">7x<span>Softwares</span></a>
+  <button class="ham" id="ham-btn" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-menu" id="nav-menu">
+    <button class="nav-item" onclick="showPage('home')"><span class="ni-icon">🏠</span>Início</button>
+    <button class="nav-item" onclick="showPage('kodname')"><span class="ni-icon">🏪</span>KodName</button>
+    <button class="nav-item" onclick="showPage('kanrisha')"><span class="ni-icon">🇯🇵</span>Kanrisha</button>
+    <button class="nav-item" onclick="showPage('expert')"><span class="ni-icon">🔍</span>Expert</button>
+    <button class="nav-item" onclick="showPage('terapia')"><span class="ni-icon">🧠</span>NeuroPeak</button>
+    <button class="nav-item" onclick="showPage('ia')"><span class="ni-icon">🤖</span>IA <span class="ni-badge">Novo</span></button>
+    <div style="display:none" class="nav-cta-wrap"><a href="#" class="nav-cta" onclick="scrollContact()">Contato</a></div>
+  </div>
+  <a href="#" class="nav-cta" onclick="scrollContact(); return false;">Contato</a>
+</nav>
+
+<!-- ════════════════════════════════════
+     HOME
+════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-chip"><span class="chip-dot"></span>Tecnologia que transforma</div>
+    <h1>Soluções digitais para<br><strong>empresas que crescem</strong></h1>
+    <p class="hero-sub">Software, inteligência artificial, saúde emocional e perícia técnica — tudo sob o mesmo teto.</p>
+  </div>
+
+  <div class="stats-row reveal">
+    <div class="stat-pill"><b>5</b>&nbsp;produtos</div>
+    <div class="stat-pill"><b>Multi</b>segmento</div>
+    <div class="stat-pill"><b>Nacional</b>&nbsp;&amp; global</div>
+    <div class="stat-pill"><b>Suporte</b>&nbsp;dedicado</div>
+  </div>
+
+  <section class="sec">
+    <div class="reveal">
+      <p class="sec-label">Nossos produtos</p>
+      <h2 class="sec-title">Uma família de soluções integradas</h2>
+      <p class="sec-sub">Cada produto foi criado para resolver um problema real, com qualidade e atenção ao detalhe.</p>
+    </div>
+    <div class="home-products reveal">
+      <div class="prod-card pc-blue" onclick="showPage('kodname')">
+        <span class="prod-icon">🏪</span>
+        <div class="prod-name">KodName</div>
+        <div class="prod-tagline">ERP comercial completo — vendas, estoque, financeiro, CRM e muito mais.</div>
+        <div class="prod-badge">ERP · Win64</div>
+      </div>
+      <div class="prod-card pc-indigo" onclick="showPage('kanrisha')">
+        <span class="prod-icon">🇯🇵</span>
+        <div class="prod-name">Kanrisha</div>
+        <div class="prod-tagline">管理システム — ERP para o mercado japonês e times globais.</div>
+        <div class="prod-badge">日本語 · EN · PT</div>
+      </div>
+      <div class="prod-card pc-amber" onclick="showPage('expert')">
+        <span class="prod-icon">🔍</span>
+        <div class="prod-name">Expert</div>
+        <div class="prod-tagline">Perícia grafotécnica, assinaturas digitais e documentoscopia.</div>
+        <div class="prod-badge">Perícia · Jurídico</div>
+      </div>
+      <div class="prod-card pc-rose" onclick="showPage('terapia')">
+        <span class="prod-icon">🧠</span>
+        <div class="prod-name">NeuroPeak</div>
+        <div class="prod-tagline">Emotional health, focus & peak human performance — fast, proven results.</div>
+        <div class="prod-badge">Mental Health · Performance</div>
+      </div>
+      <div class="prod-card pc-teal" onclick="showPage('ia')">
+        <span class="prod-icon">🤖</span>
+        <div class="prod-name">IA</div>
+        <div class="prod-tagline">Agentes de IA, chatbots e automação de processos empresariais.</div>
+        <div class="prod-badge">IA · Automação</div>
+      </div>
+    </div>
+  </section>
+
+  <div id="home-contact">
+    <section class="sec" style="padding-top:0;">
+      <div class="reveal">
+        <p class="sec-label">Fale conosco</p>
+        <h2 class="sec-title">Entre em contato</h2>
+        <p class="sec-sub">Estamos prontos para atender sua empresa.</p>
+      </div>
+      <div class="contact-block reveal">
+        <div class="contact-row">
+          <div class="contact-icon">📧</div>
+          <div><div class="contact-label">E-mail</div><div class="contact-val"><a href="/cdn-cgi/l/email-protection#3b5f5e574b535264565a557b53544f565a525715585456"><span class="__cf_email__" data-cfemail="e88c8d84988081b7858986a880879c85898184c68b8785">[email&#160;protected]</span></a></div></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">💬</div>
+          <div><div class="contact-label">WhatsApp</div><div class="contact-val"><a href="https://wa.me/5522988151371" target="_blank">+55 22 98815-1371</a></div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-logo">7x<span>Softwares</span></div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="showPage('kodname')">KodName</button>
+        <button class="footer-link" onclick="showPage('kanrisha')">Kanrisha</button>
+        <button class="footer-link" onclick="showPage('expert')">Expert</button>
+        <button class="footer-link" onclick="showPage('terapia')">NeuroPeak</button>
+        <button class="footer-link" onclick="showPage('ia')">IA</button>
+      </div>
+    </div>
+    <div class="footer-bottom">7xSoftwares · Tecnologia que transforma · © 2026</div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════
+     KODNAME
+════════════════════════════════════ -->
+<div id="page-kodname" class="page">
+  <div class="hero">
+    <div class="hero-chip"><span class="chip-dot"></span>ERP 100% nacional</div>
+    <h1>Gestão comercial<br><strong>simples e completa</strong></h1>
+    <p class="hero-sub">Vendas, estoque, financeiro, locação e CRM integrados num único sistema — nativo, ultrarrápido e seguro.</p>
+  </div>
+
+  <div class="stats-row reveal">
+    <div class="stat-pill"><b>120+</b>&nbsp;módulos</div>
+    <div class="stat-pill"><b>Multi</b>filial</div>
+    <div class="stat-pill"><b>Nativo</b>&nbsp;64-bit</div>
+    <div class="stat-pill"><b>Criptografia</b>&nbsp;E2E</div>
+  </div>
+
+  <div class="feature-pills reveal">
+    <span class="fp"><span>💳</span>Ponto de Venda</span>
+    <span class="fp"><span>📊</span>Fluxo de Caixa</span>
+    <span class="fp"><span>📦</span>Estoque</span>
+    <span class="fp"><span>🚗</span>Locação de Veículos</span>
+    <span class="fp"><span>🔧</span>Ordem de Serviço</span>
+    <span class="fp"><span>🗂️</span>CRM e Visitas</span>
+    <span class="fp"><span>💰</span>Comissões</span>
+    <span class="fp"><span>📈</span>Relatórios</span>
+    <span class="fp"><span>🍽️</span>Bares &amp; Restaurantes</span>
+    <span class="fp"><span>🏥</span>Clínicas</span>
+    <span class="fp"><span>📋</span>Cartão de Ponto</span>
+    <span class="fp"><span>🔒</span>Acesso Seguro</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <section class="sec" id="modulos">
+    <div class="reveal">
+      <p class="sec-label">O que está incluído</p>
+      <h2 class="sec-title">Tudo que sua empresa precisa, em um só lugar</h2>
+      <p class="sec-sub">Do caixa ao relatório gerencial, sem depender de outros softwares.</p>
+    </div>
+    <div class="modules-grid reveal">
+      <div class="mod-card mc1"><span class="mod-icon">💳</span><div class="mod-title">Vendas &amp; PDV</div><div class="mod-desc">Venda balcão, venda a mesa, pedidos, orçamentos, descontos e promoções com agilidade no caixa.</div><div class="mod-tags"><span class="mod-tag">Venda rápida</span><span class="mod-tag">Pedidos</span></div></div>
+      <div class="mod-card mc2"><span class="mod-icon">📊</span><div class="mod-title">Financeiro</div><div class="mod-desc">Fluxo de caixa, plano de contas, parcelas, cheques, formas de pagamento e estorno — tudo rastreável.</div><div class="mod-tags"><span class="mod-tag">Caixa</span><span class="mod-tag">Cheques</span></div></div>
+      <div class="mod-card mc3"><span class="mod-icon">📦</span><div class="mod-title">Estoque &amp; Produtos</div><div class="mod-desc">Categorias, marcas, medidas, reajuste de preços, etiquetas, semelhantes e compras.</div><div class="mod-tags"><span class="mod-tag">Reajuste</span><span class="mod-tag">Etiquetas</span></div></div>
+      <div class="mod-card mc4"><span class="mod-icon">👥</span><div class="mod-title">Clientes</div><div class="mod-desc">Cadastro detalhado, segmentação, fichas, preferenciais, inadimplentes e inativos.</div><div class="mod-tags"><span class="mod-tag">Segmentação</span><span class="mod-tag">Ficha</span></div></div>
+      <div class="mod-card mc5"><span class="mod-icon">🔧</span><div class="mod-title">Serviços &amp; OS</div><div class="mod-desc">Ordens de serviço, assistência técnica e serviços de celular — adaptável à sua especialidade.</div><div class="mod-tags"><span class="mod-tag">OS</span><span class="mod-tag">Celulares</span></div></div>
+      <div class="mod-card mc6"><span class="mod-icon">🗂️</span><div class="mod-title">CRM &amp; Visitas</div><div class="mod-desc">Agendamento, registro, SAC com categorias e status, planos e objetivos de campo.</div><div class="mod-tags"><span class="mod-tag">SAC</span><span class="mod-tag">Campo</span></div></div>
+      <div class="mod-card mc7"><span class="mod-icon">💰</span><div class="mod-title">Comissões &amp; RH</div><div class="mod-desc">Comissões automáticas, ranking de vendedores, cartão de ponto e permissões de usuário.</div><div class="mod-tags"><span class="mod-tag">Ranking</span><span class="mod-tag">Ponto</span></div></div>
+      <div class="mod-card mc8"><span class="mod-icon">📈</span><div class="mod-title">Relatórios</div><div class="mod-desc">Produtos, estoque, vendas, clientes e resumo executivo — dados para decisões estratégicas.</div><div class="mod-tags"><span class="mod-tag">Gerencial</span><span class="mod-tag">Resumo</span></div></div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0;">
+    <div class="reveal">
+      <p class="sec-label">Feito para o seu mercado</p>
+      <h2 class="sec-title">Adaptável a múltiplos segmentos</h2>
+      <p class="sec-sub">O KodName se molda ao tipo de negócio — sem custo extra.</p>
+    </div>
+    <div class="modules-grid reveal" style="grid-template-columns:1fr 1fr;">
+      <div class="mod-card mc1"><span class="mod-icon">🛒</span><div class="mod-title">Varejo &amp; Comércio</div><div class="mod-desc">PDV, estoque, promoções e relatórios de vendas para lojas de qualquer porte.</div></div>
+      <div class="mod-card mc5"><span class="mod-icon">🍽️</span><div class="mod-title">Bares &amp; Restaurantes</div><div class="mod-desc">Venda a mesa, controle de comandas e fechamento de turno integrado.</div></div>
+      <div class="mod-card mc4"><span class="mod-icon">🏥</span><div class="mod-title">Clínicas</div><div class="mod-desc">Cadastro de pacientes, agendamentos, SAC e histórico de atendimentos.</div></div>
+      <div class="mod-card mc7"><span class="mod-icon">✂️</span><div class="mod-title">Salão de Beleza</div><div class="mod-desc">Comissão automática, agendamentos, produtos químicos e fidelização.</div></div>
+      <div class="mod-card mc6"><span class="mod-icon">🚗</span><div class="mod-title">Locadora de Veículos</div><div class="mod-desc">Contratos, frota completa, cobranças integradas e histórico por cliente.</div></div>
+      <div class="mod-card mc2"><span class="mod-icon">🔩</span><div class="mod-title">Assistência Técnica</div><div class="mod-desc">OS com diagnóstico, peças, rastreamento de status e histórico por equipamento.</div></div>
+    </div>
+  </section>
+
+  <div class="highlight reveal">
+    <p class="sec-label">Diferenciais técnicos</p>
+    <h2 class="sec-title" style="color:#fff;margin-bottom:10px;">Por que KodName</h2>
+    <p class="sec-sub" style="color:rgba(255,255,255,.6);margin-bottom:20px;">Feito para durar e crescer com o seu negócio.</p>
+    <ul class="hl-list">
+      <li><span class="hl-ic">⚡</span>Nativo 64-bit — ultraveloz, sem dependências pesadas</li>
+      <li><span class="hl-ic">🌐</span>Internet, intranet e criptografia E2E — acesso seguro de qualquer lugar</li>
+      <li><span class="hl-ic">🏢</span>Multi-filial e multi-terminal com estoque centralizado</li>
+      <li><span class="hl-ic">👥</span>Comissões, cartão de ponto e permissões por usuário</li>
+    </ul>
+    <div class="hl-metrics">
+      <div class="hl-m"><div class="hl-m-num">120<em>+</em></div><div class="hl-m-label">Módulos integrados</div></div>
+      <div class="hl-m"><div class="hl-m-num">100<em>%</em></div><div class="hl-m-label">Criptografado E2E</div></div>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="reveal">
+      <p class="sec-label">Fale conosco</p>
+      <h2 class="sec-title">Entre em contato</h2>
+      <p class="sec-sub">Solicite uma demonstração gratuita.</p>
+    </div>
+    <div class="contact-block reveal">
+      <div class="contact-row"><div class="contact-icon">📧</div><div><div class="contact-label">E-mail</div><div class="contact-val"><a href="/cdn-cgi/l/email-protection#5b3f3e372b333204363a351b33342f363a323775383436"><span class="__cf_email__" data-cfemail="9bfffef7ebf3f2c4f6faf5dbf3f4eff6faf2f7b5f8f4f6">[email&#160;protected]</span></a></div></div></div>
+      <div class="contact-row"><div class="contact-icon">💬</div><div><div class="contact-label">WhatsApp</div><div class="contact-val"><a href="https://wa.me/5522988151371" target="_blank">+55 22 98815-1371</a></div></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-logo">7x<span>Softwares</span></div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="showPage('home')">Início</button>
+        <button class="footer-link" onclick="showPage('kanrisha')">Kanrisha</button>
+        <button class="footer-link" onclick="showPage('expert')">Expert</button>
+        <button class="footer-link" onclick="showPage('ia')">IA</button>
+      </div>
+    </div>
+    <div class="footer-bottom">KodName · 7xSoftwares · © 2026</div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════
+     KANRISHA
+════════════════════════════════════ -->
+<div id="page-kanrisha" class="page">
+  <div class="hero" style="position:relative;">
+    <span class="kamon">⛩</span>
+    <div class="hero-chip"><span class="chip-dot"></span>日本市場向けERPシステム</div>
+    <h1>ビジネスを<strong>次のステージへ</strong></h1>
+    <p class="hero-sub">Kanrisha（カンリシャ）— 日本品質の効率性とグローバルな展開を可能にするソフトウェア。完全マルチリンガル対応：日本語・英語・ポルトガル語。</p>
+  </div>
+
+  <div class="stats-row reveal">
+    <div class="stat-pill"><b>64bit</b>&nbsp;ネイティブ</div>
+    <div class="stat-pill"><b>多言語</b>&nbsp;対応</div>
+    <div class="stat-pill"><b>E2E</b>&nbsp;暗号化</div>
+    <div class="stat-pill"><b>Firebird 5</b></div>
+  </div>
+
+  <div class="feature-pills reveal">
+    <span class="fp"><span>🏪</span>POS販売</span>
+    <span class="fp"><span>📦</span>在庫管理</span>
+    <span class="fp"><span>💴</span>財務管理</span>
+    <span class="fp"><span>👥</span>CRM</span>
+    <span class="fp"><span>🔧</span>サービスオーダー</span>
+    <span class="fp"><span>📊</span>経営レポート</span>
+    <span class="fp"><span>🚚</span>配達スケジュール</span>
+    <span class="fp"><span>💰</span>コミッション</span>
+    <span class="fp"><span>🌐</span>グローバル対応</span>
+    <span class="fp"><span>🔒</span>セキュリティ</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <section class="sec">
+    <div class="reveal">
+      <p class="sec-label">主な機能</p>
+      <h2 class="sec-title">すべての業務を1つのプラットフォームに</h2>
+      <p class="sec-sub">Kanrishaは、ビジネスのすべての領域を統合します。</p>
+    </div>
+    <div class="modules-grid reveal">
+      <div class="mod-card mc1"><span class="mod-icon">🏪</span><div class="mod-title">POS・販売管理</div><div class="mod-desc">カウンター販売向けの高速でモダンなPOS。VIP販売、見積もり、カタログ・インターネット注文に対応。</div><div class="mod-tags"><span class="mod-tag">高速POS</span><span class="mod-tag">注文管理</span></div></div>
+      <div class="mod-card mc2"><span class="mod-icon">💴</span><div class="mod-title">高度な財務管理</div><div class="mod-desc">現金管理、買掛金・売掛金、銀行取引、コミッション計算など包括的な財務機能。</div><div class="mod-tags"><span class="mod-tag">財務</span><span class="mod-tag">コミッション</span></div></div>
+      <div class="mod-card mc3"><span class="mod-icon">📦</span><div class="mod-title">在庫管理</div><div class="mod-desc">商品・顧客・仕入先・ブランドの完全なマスタ登録とリアルタイム在庫管理。</div><div class="mod-tags"><span class="mod-tag">リアルタイム</span><span class="mod-tag">マスタ管理</span></div></div>
+      <div class="mod-card mc4"><span class="mod-icon">👥</span><div class="mod-title">充実したCRM</div><div class="mod-desc">顧客関係を強化するCRM。詳細な顧客履歴、優良顧客管理、未入金顧客管理。</div><div class="mod-tags"><span class="mod-tag">顧客管理</span><span class="mod-tag">履歴</span></div></div>
+      <div class="mod-card mc5"><span class="mod-icon">🔧</span><div class="mod-title">サービスオーダー</div><div class="mod-desc">配達・技術者スケジューリング機能を備えたサービスオーダー管理システム。</div><div class="mod-tags"><span class="mod-tag">OS管理</span><span class="mod-tag">スケジュール</span></div></div>
+      <div class="mod-card mc6"><span class="mod-icon">📊</span><div class="mod-title">詳細な経営レポート</div><div class="mod-desc">見積もりから入金・コミッションまでの完全な業務フローとリアルタイムレポート。</div><div class="mod-tags"><span class="mod-tag">レポート</span><span class="mod-tag">分析</span></div></div>
+      <div class="mod-card mc7"><span class="mod-icon">🌐</span><div class="mod-title">多言語対応</div><div class="mod-desc">インターフェースは日本語・英語・ポルトガル語で利用可能。国際的なチームに最適。</div><div class="mod-tags"><span class="mod-tag">日本語</span><span class="mod-tag">English</span><span class="mod-tag">PT</span></div></div>
+      <div class="mod-card mc8"><span class="mod-icon">🔒</span><div class="mod-title">セキュリティ</div><div class="mod-desc">ローカルネットワーク、インターネット、暗号化されたイントラネットに対応。世界のどこからでも安全にアクセス。</div><div class="mod-tags"><span class="mod-tag">E2E暗号化</span><span class="mod-tag">安全</span></div></div>
+    </div>
+  </section>
+
+  <div class="highlight reveal">
+    <p class="sec-label">Kanrishaが賢明な選択である理由</p>
+    <h2 class="sec-title" style="color:#fff;margin-bottom:10px;">安全性・速度・安定性・国際化</h2>
+    <p class="sec-sub" style="color:rgba(255,255,255,.58);margin-bottom:20px;">最小限の技術介入で24時間365日稼働。国際チームが日本市場に対応できるよう設計されています。</p>
+    <ul class="hl-list">
+      <li><span class="hl-ic">⚡</span>64ビットネイティブ — 大量の業務処理でも優れたパフォーマンス</li>
+      <li><span class="hl-ic">🗄️</span>Firebird 5データベース — 高速・安全・自己完結型、メンテナンスほぼ不要</li>
+      <li><span class="hl-ic">🌐</span>インターネット・イントラネット・暗号化通信対応</li>
+      <li><span class="hl-ic">💴</span>人件費を大幅に削減しながら日本品質を維持</li>
+    </ul>
+    <div class="hl-metrics">
+      <div class="hl-m"><div class="hl-m-num">3<em>言語</em></div><div class="hl-m-label">日本語・English・PT</div></div>
+      <div class="hl-m"><div class="hl-m-num">24/7<em></em></div><div class="hl-m-label">稼働・低メンテナンス</div></div>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="reveal">
+      <p class="sec-label">お問い合わせ / Contact</p>
+      <h2 class="sec-title">ご連絡ください</h2>
+      <p class="sec-sub">デモのご予約・ご質問はこちらからどうぞ。</p>
+    </div>
+    <div class="contact-block reveal">
+      <div class="contact-row"><div class="contact-icon">📧</div><div><div class="contact-label">E-mail</div><div class="contact-val"><a href="/cdn-cgi/l/email-protection#187c7d74687071477579765870776c75797174367b7775"><span class="__cf_email__" data-cfemail="5f3b3a332f373600323e311f37302b323e3633713c3032">[email&#160;protected]</span></a></div></div></div>
+      <div class="contact-row"><div class="contact-icon">💬</div><div><div class="contact-label">WhatsApp</div><div class="contact-val"><a href="https://wa.me/5522988151371" target="_blank">+55 22 98815-1371</a></div></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-logo">7x<span>Softwares</span></div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="showPage('home')">Início</button>
+        <button class="footer-link" onclick="showPage('kodname')">KodName</button>
+        <button class="footer-link" onclick="showPage('expert')">Expert</button>
+        <button class="footer-link" onclick="showPage('ia')">IA</button>
+      </div>
+    </div>
+    <div class="footer-bottom">Kanrisha · 7xSoftwares · © 2026 · 日本市場に最適。グローバルチームに完璧。</div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════
+     EXPERT
+════════════════════════════════════ -->
+<div id="page-expert" class="page">
+  <div class="hero">
+    <div class="hero-chip"><span class="chip-dot" style="background:#c9a227;"></span>Perícia técnica especializada</div>
+    <h1>Documentos que<br><strong>dizem a verdade</strong></h1>
+    <p class="hero-sub">Perícia grafotécnica, documentoscopia e análise de assinaturas digitais e eletrônicas — com rigor técnico e respaldo jurídico.</p>
+  </div>
+
+  <div class="stats-row reveal">
+    <div class="stat-pill"><b>Grafotécnica</b></div>
+    <div class="stat-pill"><b>Assinatura</b>&nbsp;digital</div>
+    <div class="stat-pill"><b>Jurídico</b></div>
+    <div class="stat-pill"><b>Laudo</b>&nbsp;técnico</div>
+  </div>
+
+  <div class="feature-pills reveal">
+    <span class="fp"><span>🔍</span>Análise de documentos</span>
+    <span class="fp"><span>✍️</span>Perícia de assinaturas</span>
+    <span class="fp"><span>🔐</span>Assinatura digital</span>
+    <span class="fp"><span>📄</span>Assinatura eletrônica</span>
+    <span class="fp"><span>⚖️</span>Laudo pericial</span>
+    <span class="fp"><span>🔬</span>Documentoscopia</span>
+    <span class="fp"><span>🧾</span>Autenticidade</span>
+    <span class="fp"><span>🏛️</span>Uso judicial</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <section class="sec">
+    <div class="reveal">
+      <p class="sec-label">Serviços periciais</p>
+      <h2 class="sec-title">Expertise técnica para decisões que importam</h2>
+      <p class="sec-sub">Da análise laboratorial ao laudo jurídico — cobertura completa em perícia documental.</p>
+    </div>
+    <div class="modules-grid reveal">
+      <div class="mod-card mc3"><span class="mod-icon">✍️</span><div class="mod-title">Perícia Grafotécnica</div><div class="mod-desc">Análise científica de manuscritos, assinaturas e traçados para determinar autoria e autenticidade.</div><div class="mod-tags"><span class="mod-tag">Manuscrito</span><span class="mod-tag">Autoria</span></div></div>
+      <div class="mod-card mc1"><span class="mod-icon">🔐</span><div class="mod-title">Assinaturas Digitais</div><div class="mod-desc">Validação e perícia de assinaturas digitais com certificado ICP-Brasil, análise de hash e cadeia de custódia.</div><div class="mod-tags"><span class="mod-tag">ICP-Brasil</span><span class="mod-tag">Hash</span></div></div>
+      <div class="mod-card mc2"><span class="mod-icon">📄</span><div class="mod-title">Assinaturas Eletrônicas</div><div class="mod-desc">Análise de assinaturas eletrônicas simples e avançadas — validade jurídica, rastreabilidade e integridade.</div><div class="mod-tags"><span class="mod-tag">Eletrônica</span><span class="mod-tag">Jurídico</span></div></div>
+      <div class="mod-card mc9"><span class="mod-icon">🔬</span><div class="mod-title">Documentoscopia</div><div class="mod-desc">Exame técnico de documentos para detectar rasuras, falsificações, adulterações e intercalações.</div><div class="mod-tags"><span class="mod-tag">Falsificação</span><span class="mod-tag">Adulteração</span></div></div>
+      <div class="mod-card mc7"><span class="mod-icon">⚖️</span><div class="mod-title">Laudo Pericial</div><div class="mod-desc">Elaboração de laudos técnicos fundamentados para uso em processos judiciais, arbitragem e due diligence.</div><div class="mod-tags"><span class="mod-tag">Judicial</span><span class="mod-tag">Arbitragem</span></div></div>
+      <div class="mod-card mc10"><span class="mod-icon">🧾</span><div class="mod-title">Autenticidade Documental</div><div class="mod-desc">Verificação de selos, carimbos, papel, tinta e outros elementos físicos e digitais de segurança.</div><div class="mod-tags"><span class="mod-tag">Selos</span><span class="mod-tag">Segurança</span></div></div>
+    </div>
+  </section>
+
+  <div class="highlight reveal" style="background:#1a1208;">
+    <p class="sec-label" style="color:#c9a227;">Por que escolher Expert</p>
+    <h2 class="sec-title" style="color:#f0ede8;margin-bottom:10px;">Rigor técnico. Respaldo jurídico.</h2>
+    <p class="sec-sub" style="color:rgba(240,237,232,.55);margin-bottom:20px;">Cada análise segue metodologia científica reconhecida e gera documentação apta para uso legal.</p>
+    <ul class="hl-list">
+      <li><span class="hl-ic">🔬</span>Metodologia científica rigorosa e documentada</li>
+      <li><span class="hl-ic">⚖️</span>Laudos aceitos em processos judiciais e arbitragens</li>
+      <li><span class="hl-ic">🔐</span>Análise de certificados digitais ICP-Brasil e internacionais</li>
+      <li><span class="hl-ic">📋</span>Pareceres técnicos para due diligence e compliance</li>
+    </ul>
+  </div>
+
+  <div class="feat-list reveal" style="margin:28px 20px 0;">
+    <div class="feat-card"><span class="feat-num">01</span><div><div class="feat-title">Cobertura completa em documentoscopia</div><div class="feat-desc">Análise de papel, tinta, impressão, rasuras, adulterações e qualquer elemento físico do documento.</div></div></div>
+    <div class="feat-card"><span class="feat-num">02</span><div><div class="feat-title">Validade jurídica garantida</div><div class="feat-desc">Laudos elaborados conforme normas técnicas vigentes, aptos para juntar a processos judiciais em qualquer instância.</div></div></div>
+    <div class="feat-card"><span class="feat-num">03</span><div><div class="feat-title">Assinaturas digitais e eletrônicas</div><div class="feat-desc">Verificação de validade, integridade, rastreabilidade e conformidade legal de assinaturas em ambientes digitais.</div></div></div>
+    <div class="feat-card"><span class="feat-num">04</span><div><div class="feat-title">Atendimento remoto e presencial</div><div class="feat-desc">Análise pode ser conduzida remotamente com envio de documentos digitalizados ou presencialmente conforme a demanda.</div></div></div>
+  </div>
+
+  <section class="sec" style="padding-top:28px;">
+    <div class="reveal">
+      <p class="sec-label">Contato</p>
+      <h2 class="sec-title">Solicite uma avaliação</h2>
+      <p class="sec-sub">Envie sua demanda e receba uma resposta técnica rápida.</p>
+    </div>
+    <div class="contact-block reveal">
+      <div class="contact-row"><div class="contact-icon">📧</div><div><div class="contact-label">E-mail</div><div class="contact-val"><a href="/cdn-cgi/l/email-protection#7b1f1e170b131224161a153b13140f161a121755181416"><span class="__cf_email__" data-cfemail="dcb8b9b0acb4b583b1bdb29cb4b3a8b1bdb5b0f2bfb3b1">[email&#160;protected]</span></a></div></div></div>
+      <div class="contact-row"><div class="contact-icon">💬</div><div><div class="contact-label">WhatsApp</div><div class="contact-val"><a href="https://wa.me/5522988151371" target="_blank">+55 22 98815-1371</a></div></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-logo">7x<span>Softwares</span></div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="showPage('home')">Início</button>
+        <button class="footer-link" onclick="showPage('kodname')">KodName</button>
+        <button class="footer-link" onclick="showPage('terapia')">NeuroPeak</button>
+        <button class="footer-link" onclick="showPage('ia')">IA</button>
+      </div>
+    </div>
+    <div class="footer-bottom">Expert · 7xSoftwares · © 2026</div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════
+     TERAPIA
+════════════════════════════════════ -->
+<div id="page-terapia" class="page">
+  <div class="hero">
+    <div class="hero-chip"><span class="chip-dot" style="background:#a78bfa;"></span>Emotional health &amp; peak performance</div>
+    <h1>A clearer mind.<br><strong>A sharper you.</strong></h1>
+    <p class="hero-sub">Fast, effective treatment for trauma, emotional blocks and focus loss — proven methodology, real results from the very first session.</p>
+  </div>
+
+  <div class="stats-row reveal">
+    <div class="stat-pill"><b>Fast</b>&nbsp;&amp; effective</div>
+    <div class="stat-pill"><b>Trauma</b>&nbsp;recovery</div>
+    <div class="stat-pill"><b>Focus</b>&nbsp;&amp; performance</div>
+    <div class="stat-pill"><b>Online</b>&nbsp;&amp; in-person</div>
+  </div>
+
+  <div class="feature-pills reveal">
+    <span class="fp"><span>🧠</span>Emotional health</span>
+    <span class="fp"><span>🎯</span>Deep focus</span>
+    <span class="fp"><span>💔</span>Trauma treatment</span>
+    <span class="fp"><span>😰</span>Anxiety &amp; panic</span>
+    <span class="fp"><span>🔄</span>Limiting beliefs</span>
+    <span class="fp"><span>🚀</span>Peak performance</span>
+    <span class="fp"><span>😴</span>Sleep quality</span>
+    <span class="fp"><span>💼</span>Professional edge</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <section class="sec">
+    <div class="reveal">
+      <p class="sec-label">What we treat</p>
+      <h2 class="sec-title">Real results — fast and lasting</h2>
+      <p class="sec-sub">A modern therapeutic approach built for efficiency — no years of sessions before you see change.</p>
+    </div>
+    <div class="modules-grid reveal">
+      <div class="mod-card mc8"><span class="mod-icon">💔</span><div class="mod-title">Trauma &amp; PTSD</div><div class="mod-desc">Treatment for simple and complex trauma using accelerated processing techniques — without repeatedly reliving the event.</div><div class="mod-tags"><span class="mod-tag">PTSD</span><span class="mod-tag">Rapid</span></div></div>
+      <div class="mod-card mc4"><span class="mod-icon">😰</span><div class="mod-title">Anxiety &amp; Phobias</div><div class="mod-desc">Effective reduction of generalized anxiety, panic disorder and specific phobias through structured, evidence-based protocols.</div><div class="mod-tags"><span class="mod-tag">Anxiety</span><span class="mod-tag">Phobia</span></div></div>
+      <div class="mod-card mc1"><span class="mod-icon">🎯</span><div class="mod-title">Focus &amp; Productivity</div><div class="mod-desc">Build sustained focus, eliminate procrastination and boost productivity on high-stakes tasks and long-term projects.</div><div class="mod-tags"><span class="mod-tag">Focus</span><span class="mod-tag">Productivity</span></div></div>
+      <div class="mod-card mc7"><span class="mod-icon">🚀</span><div class="mod-title">Peak Performance</div><div class="mod-desc">Programs for professionals, athletes and leaders who need to consistently perform at their highest level under pressure.</div><div class="mod-tags"><span class="mod-tag">Performance</span><span class="mod-tag">Leadership</span></div></div>
+      <div class="mod-card mc3"><span class="mod-icon">🔄</span><div class="mod-title">Limiting Beliefs</div><div class="mod-desc">Identify and reprogram self-sabotaging thought patterns that block personal and professional growth.</div><div class="mod-tags"><span class="mod-tag">Mindset</span><span class="mod-tag">Reprogramming</span></div></div>
+      <div class="mod-card mc2"><span class="mod-icon">💼</span><div class="mod-title">Burnout &amp; Stress</div><div class="mod-desc">Recover from burnout and manage chronic stress with practical emotional regulation strategies that actually stick.</div><div class="mod-tags"><span class="mod-tag">Burnout</span><span class="mod-tag">Stress</span></div></div>
+    </div>
+  </section>
+
+  <div class="highlight reveal" style="background:#1e0a3c;">
+    <p class="sec-label" style="color:#c4b5fd;">How it works</p>
+    <h2 class="sec-title" style="color:#fff;margin-bottom:10px;">A method built for speed and depth</h2>
+    <p class="sec-sub" style="color:rgba(255,255,255,.58);margin-bottom:20px;">Unlike traditional approaches, you will feel meaningful change within the first few sessions — not after years.</p>
+    <ul class="hl-list">
+      <li><span class="hl-ic">🎯</span>Focused sessions with clear, measurable goals from day one</li>
+      <li><span class="hl-ic">⚡</span>Rapid processing techniques — no unnecessary repetition</li>
+      <li><span class="hl-ic">🌐</span>Online or in-person — your schedule, your choice</li>
+      <li><span class="hl-ic">📈</span>Ongoing progress tracking and continuous plan adjustment</li>
+    </ul>
+    <div class="hl-metrics">
+      <div class="hl-m"><div class="hl-m-num" style="color:#c4b5fd;">1st<em> session</em></div><div class="hl-m-label">Results from the start</div></div>
+      <div class="hl-m"><div class="hl-m-num" style="color:#c4b5fd;">Online<em> &amp; live</em></div><div class="hl-m-label">Full flexibility</div></div>
+    </div>
+  </div>
+
+  <div class="feat-list reveal" style="margin:28px 20px 0;">
+    <div class="feat-card"><span class="feat-num">01</span><div><div class="feat-title">No endless sessions</div><div class="feat-desc">NeuroPeak methodology is designed for speed. Most clients notice significant changes within the first three sessions.</div></div></div>
+    <div class="feat-card"><span class="feat-num">02</span><div><div class="feat-title">Science-backed approach</div><div class="feat-desc">Techniques grounded in neuroscience, cognitive behavioral therapy and accelerated resolution — not guesswork.</div></div></div>
+    <div class="feat-card"><span class="feat-num">03</span><div><div class="feat-title">Built for high performers</div><div class="feat-desc">Whether you are an executive, athlete or entrepreneur, NeuroPeak is designed to unlock the next level of your potential.</div></div></div>
+    <div class="feat-card"><span class="feat-num">04</span><div><div class="feat-title">Fully remote-compatible</div><div class="feat-desc">Sessions conducted via video call are just as effective as in-person. Work with us from anywhere in the world.</div></div></div>
+  </div>
+
+  <section class="sec" style="padding-top:28px;">
+    <div class="reveal">
+      <p class="sec-label">Book a session</p>
+      <h2 class="sec-title">Take the first step</h2>
+      <p class="sec-sub">Reach out and schedule a free introductory conversation — no commitment required.</p>
+    </div>
+    <div class="contact-block reveal">
+      <div class="contact-row"><div class="contact-icon">📧</div><div><div class="contact-label">Email</div><div class="contact-val"><a href="/cdn-cgi/l/email-protection#2246474e524a4b7d4f434c624a4d564f434b4e0c414d4f"><span class="__cf_email__" data-cfemail="eb8f8e879b8382b4868a85ab83849f868a8287c5888486">[email&#160;protected]</span></a></div></div></div>
+      <div class="contact-row"><div class="contact-icon">💬</div><div><div class="contact-label">WhatsApp</div><div class="contact-val"><a href="https://wa.me/5522988151371" target="_blank">+55 22 98815-1371</a></div></div></div>
+    </div>
+  </section>
+
+  <footer style="background:#1e0a3c;">
+    <div class="footer-top">
+      <div class="footer-logo">7x<span>Softwares</span></div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="showPage('home')">Home</button>
+        <button class="footer-link" onclick="showPage('kodname')">KodName</button>
+        <button class="footer-link" onclick="showPage('expert')">Expert</button>
+        <button class="footer-link" onclick="showPage('ia')">IA</button>
+      </div>
+    </div>
+    <div class="footer-bottom">NeuroPeak · 7xSoftwares · © 2026</div>
+  </footer>
+</div>
+
+<div id="page-ia" class="page">
+  <div class="hero">
+    <div class="hero-chip"><span class="chip-dot" style="background:#00d4aa;animation:blink 1.2s ease-in-out infinite;"></span>Inteligência Artificial aplicada</div>
+    <h1>Sua empresa<br><strong>no piloto automático</strong></h1>
+    <p class="hero-sub">Agentes de IA, chatbots inteligentes e automação de ponta a ponta — do atendimento ao cliente até os processos internos.</p>
+  </div>
+
+  <div class="stats-row reveal">
+    <div class="stat-pill"><b>Agentes</b>&nbsp;de IA</div>
+    <div class="stat-pill"><b>Chatbots</b></div>
+    <div class="stat-pill"><b>Automação</b>&nbsp;total</div>
+    <div class="stat-pill"><b>24/7</b>&nbsp;ativo</div>
+  </div>
+
+  <div class="feature-pills reveal">
+    <span class="fp"><span>🤖</span>Agentes autônomos</span>
+    <span class="fp"><span>💬</span>Chatbot inteligente</span>
+    <span class="fp"><span>📧</span>E-mail automatizado</span>
+    <span class="fp"><span>🔄</span>Fluxos de trabalho</span>
+    <span class="fp"><span>📞</span>Atendimento 24/7</span>
+    <span class="fp"><span>📊</span>Analytics em tempo real</span>
+    <span class="fp"><span>🔗</span>Integrações API</span>
+    <span class="fp"><span>🧠</span>IA generativa</span>
+    <span class="fp"><span>📱</span>WhatsApp &amp; redes sociais</span>
+    <span class="fp"><span>⚙️</span>RPA</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <section class="sec">
+    <div class="reveal">
+      <p class="sec-label">O que automatizamos</p>
+      <h2 class="sec-title">IA que trabalha enquanto você dorme</h2>
+      <p class="sec-sub">Automatize o atendimento, os processos e a inteligência da sua empresa com soluções de IA sob medida.</p>
+    </div>
+    <div class="modules-grid reveal">
+      <div class="mod-card mc6"><span class="mod-icon">🤖</span><div class="mod-title">Agentes de IA</div><div class="mod-desc">Agentes autônomos que executam tarefas complexas, tomam decisões e interagem com sistemas sem intervenção humana.</div><div class="mod-tags"><span class="mod-tag">Autônomo</span><span class="mod-tag">Multi-tarefa</span></div></div>
+      <div class="mod-card mc1"><span class="mod-icon">💬</span><div class="mod-title">Chatbots Inteligentes</div><div class="mod-desc">Chatbots com IA generativa para atendimento ao cliente no WhatsApp, site, Instagram e outras plataformas.</div><div class="mod-tags"><span class="mod-tag">WhatsApp</span><span class="mod-tag">24/7</span></div></div>
+      <div class="mod-card mc7"><span class="mod-icon">🔄</span><div class="mod-title">Automação de Processos</div><div class="mod-desc">Mapeamento e automação de fluxos internos — do onboarding de clientes à emissão de documentos e cobranças.</div><div class="mod-tags"><span class="mod-tag">RPA</span><span class="mod-tag">Fluxos</span></div></div>
+      <div class="mod-card mc3"><span class="mod-icon">📧</span><div class="mod-title">Comunicação Automatizada</div><div class="mod-desc">E-mail marketing, follow-ups, lembretes e campanhas disparadas automaticamente com base em comportamento.</div><div class="mod-tags"><span class="mod-tag">E-mail</span><span class="mod-tag">Campanhas</span></div></div>
+      <div class="mod-card mc2"><span class="mod-icon">📊</span><div class="mod-title">Analytics &amp; Insights</div><div class="mod-desc">Dashboards inteligentes com insights gerados por IA — identifique tendências, gargalos e oportunidades em tempo real.</div><div class="mod-tags"><span class="mod-tag">Dashboard</span><span class="mod-tag">Insights</span></div></div>
+      <div class="mod-card mc5"><span class="mod-icon">🔗</span><div class="mod-title">Integrações &amp; APIs</div><div class="mod-desc">Conecte seus sistemas existentes (ERP, CRM, e-commerce) com IA via API — sem trocar o que já funciona.</div><div class="mod-tags"><span class="mod-tag">API</span><span class="mod-tag">ERP</span></div></div>
+      <div class="mod-card mc4"><span class="mod-icon">🧠</span><div class="mod-title">IA Generativa</div><div class="mod-desc">Geração automática de conteúdo, respostas, contratos, relatórios e propostas baseados nos dados da sua empresa.</div><div class="mod-tags"><span class="mod-tag">Conteúdo</span><span class="mod-tag">Documentos</span></div></div>
+      <div class="mod-card mc9"><span class="mod-icon">📞</span><div class="mod-title">Atendimento Omnicanal</div><div class="mod-desc">IA unificada em todos os pontos de contato — telefone, chat, e-mail, redes sociais — com histórico centralizado.</div><div class="mod-tags"><span class="mod-tag">Omnichannel</span><span class="mod-tag">Histórico</span></div></div>
+    </div>
+  </section>
+
+  <div class="highlight reveal" style="background:#020810;">
+    <p class="sec-label" style="color:#6ee7d4;">Resultados mensuráveis</p>
+    <h2 class="sec-title" style="color:#e8f4f0;margin-bottom:10px;">Automatize. Escale. Lucre mais.</h2>
+    <p class="sec-sub" style="color:rgba(232,244,240,.5);margin-bottom:20px;">Empresas que adotam IA reduzem custos operacionais e aumentam a satisfação do cliente.</p>
+    <ul class="hl-list">
+      <li><span class="hl-ic">⚡</span>Atendimento em segundos — sem fila, sem espera, 24/7</li>
+      <li><span class="hl-ic">💰</span>Redução de custos operacionais com automação de tarefas repetitivas</li>
+      <li><span class="hl-ic">📈</span>Escale o atendimento sem aumentar a equipe proporcionalmente</li>
+      <li><span class="hl-ic">🎯</span>IA treinada com os dados e a linguagem da sua empresa</li>
+    </ul>
+    <div class="hl-metrics">
+      <div class="hl-m"><div class="hl-m-num" style="color:#6ee7d4;">24/7<em></em></div><div class="hl-m-label">Atendimento ininterrupto</div></div>
+      <div class="hl-m"><div class="hl-m-num" style="color:#6ee7d4;">∞<em> escala</em></div><div class="hl-m-label">Sem limite de atendimentos</div></div>
+    </div>
+  </div>
+
+  <div class="feat-list reveal" style="margin:28px 20px 0;">
+    <div class="feat-card"><span class="feat-num">01</span><div><div class="feat-title">Diagnóstico gratuito</div><div class="feat-desc">Analisamos seus processos atuais e mapeamos quais pontos têm maior potencial de automação e retorno.</div></div></div>
+    <div class="feat-card"><span class="feat-num">02</span><div><div class="feat-title">Implementação sob medida</div><div class="feat-desc">Cada solução é desenhada para o seu negócio — sem templates genéricos, com IA treinada nos seus dados.</div></div></div>
+    <div class="feat-card"><span class="feat-num">03</span><div><div class="feat-title">Integração com o que você já usa</div><div class="feat-desc">Conectamos a IA ao seu ERP, CRM, WhatsApp Business, e-commerce e outros sistemas sem substituir a infraestrutura atual.</div></div></div>
+    <div class="feat-card"><span class="feat-num">04</span><div><div class="feat-title">Monitoramento e evolução contínua</div><div class="feat-desc">Acompanhamento dos resultados, ajustes nos modelos e evolução constante — a IA aprende com o tempo.</div></div></div>
+  </div>
+
+  <section class="sec" style="padding-top:28px;">
+    <div class="reveal">
+      <p class="sec-label">Vamos começar</p>
+      <h2 class="sec-title">Automatize sua empresa hoje</h2>
+      <p class="sec-sub">Fale com a gente e descubra como a IA pode transformar o seu negócio.</p>
+    </div>
+    <div class="contact-block reveal">
+      <div class="contact-row"><div class="contact-icon">📧</div><div><div class="contact-label">E-mail</div><div class="contact-val"><a href="/cdn-cgi/l/email-protection#9efafbf2eef6f7c1f3fff0def6f1eaf3fff7f2b0fdf1f3"><span class="__cf_email__" data-cfemail="1672737a667e7f497b7778567e79627b777f7a3875797b">[email&#160;protected]</span></a></div></div></div>
+      <div class="contact-row"><div class="contact-icon">💬</div><div><div class="contact-label">WhatsApp</div><div class="contact-val"><a href="https://wa.me/5522988151371" target="_blank">+55 22 98815-1371</a></div></div></div>
+    </div>
+  </section>
+
+  <footer style="background:#020508;">
+    <div class="footer-top">
+      <div class="footer-logo" style="color:#e8f4f0;">7x<span style="opacity:.5;font-weight:600;">Softwares</span></div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="showPage('home')">Início</button>
+        <button class="footer-link" onclick="showPage('kodname')">KodName</button>
+        <button class="footer-link" onclick="showPage('expert')">Expert</button>
+        <button class="footer-link" onclick="showPage('terapia')">NeuroPeak</button>
+      </div>
+    </div>
+    <div class="footer-bottom">IA · 7xSoftwares · © 2026</div>
+  </footer>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  var target = document.getElementById('page-' + id);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo(0, 0);
+    document.querySelectorAll('.nav-item').forEach(function(btn) {
+      var label = btn.textContent.trim().toLowerCase();
+      var match = (id === 'home') ? (label === 'início' || label === 'home') : label.startsWith(id.toLowerCase());
+      btn.classList.toggle('active', match);
+    });
+    document.getElementById('nav-menu').classList.remove('open');
+    document.getElementById('ham-btn').classList.remove('open');
+    initReveal();
+  }
+}
+
+function toggleMenu() {
+  document.getElementById('nav-menu').classList.toggle('open');
+  document.getElementById('ham-btn').classList.toggle('open');
+}
+
+function scrollContact() {
+  var page = document.querySelector('.page.active');
+  var contact = page ? page.querySelector('.contact-block') : null;
+  if (contact) contact.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function initReveal() {
+  var els = document.querySelectorAll('.page.active .reveal:not(.visible)');
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.07 });
+  els.forEach(function(el) { obs.observe(el); });
+}
+
+initReveal();
+
+document.addEventListener('click', function(e) {
+  var nav = document.getElementById('nav-menu');
+  var ham = document.getElementById('ham-btn');
+  if (nav && ham && !nav.contains(e.target) && !ham.contains(e.target)) {
+    nav.classList.remove('open');
+    ham.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
